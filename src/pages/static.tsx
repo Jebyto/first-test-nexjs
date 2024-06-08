@@ -1,6 +1,6 @@
 // pages/dynamic.tsx
 
-import { GetServerSideProps, NextPage } from "next"
+import { GetStaticProps, NextPage } from "next"
 import { ReactNode, useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
 
@@ -9,18 +9,17 @@ interface ApiResponse {
     timestamp: Date;
 }
 
-export const getServerSideProps: GetServerSideProps = async () =>{
-
-    const serverSideData: ApiResponse = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/hello`).then(res => res.json());
+export const getStaticProps: GetStaticProps = async () => {
+    const staticData = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/hello`).then(res => res.json());
 
     return {
         props: {
-            serverSideData
+            staticData
         }
     }
 }
 
-const Dynamic: NextPage = (props: {children?: ReactNode, serverSideData?: ApiResponse}) => {
+const Static: NextPage = (props: {children?: ReactNode, staticData?: ApiResponse}) => {
 
     const [clientSideData, setClientSideData] = useState<ApiResponse>();
 
@@ -42,9 +41,9 @@ const Dynamic: NextPage = (props: {children?: ReactNode, serverSideData?: ApiRes
             <Row>
                 <Col>
                     <h3>
-                        Gerado no servidor:
+                        Gerado no estaticamente durante o build:
                     </h3>
-                    <h2>{props.serverSideData?.timestamp.toString()}</h2>
+                    <h2>{props.staticData?.timestamp.toString()}</h2>
                 </Col>
 
                 <Col>
@@ -60,4 +59,4 @@ const Dynamic: NextPage = (props: {children?: ReactNode, serverSideData?: ApiRes
     )
 }
 
-export default Dynamic
+export default Static
