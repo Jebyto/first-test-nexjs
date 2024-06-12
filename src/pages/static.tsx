@@ -1,5 +1,6 @@
 // pages/dynamic.tsx
 
+import Header from "@/components/Header";
 import { GetStaticProps, NextPage } from "next"
 import { ReactNode, useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
@@ -20,7 +21,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
 }
 
-const Static: NextPage = (props: {children?: ReactNode, staticData?: ApiResponse}) => {
+const Static: NextPage = (props: { children?: ReactNode, staticData?: ApiResponse }) => {
 
     const [clientSideData, setClientSideData] = useState<ApiResponse>();
 
@@ -34,29 +35,32 @@ const Static: NextPage = (props: {children?: ReactNode, staticData?: ApiResponse
     }
 
     return (
-        <Container tag="main">
-            <h1 className="my-5">
-                Como funcionam as renderizações do Next.js
-            </h1>
+        <>
+            <Header />
+            <Container tag="main">
+                <h1 className="my-5">
+                    Como funcionam as renderizações do Next.js
+                </h1>
 
-            <Row>
-                <Col>
-                    <h3>
-                        Gerado no estaticamente durante o build:
-                    </h3>
-                    <h2>{props.staticData?.timestamp.toString()}</h2>
-                </Col>
+                <Row>
+                    <Col>
+                        <h3>
+                            Gerado no estaticamente durante o build:
+                        </h3>
+                        <h2>{props.staticData?.timestamp.toString()}</h2>
+                    </Col>
 
-                <Col>
-                    <h3>
-                        Gerado no cliente:
-                    </h3>
-                    <h2>
-                        {clientSideData?.timestamp.toString()}
-                    </h2>
-                </Col>
-            </Row>
-        </Container>
+                    <Col>
+                        <h3>
+                            Gerado no cliente:
+                        </h3>
+                        <h2>
+                            {clientSideData?.timestamp.toString()}
+                        </h2>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }
 
